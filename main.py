@@ -70,7 +70,6 @@ class Graph:
             raise ValueError
 
 
-
 client_id = "fde1c486c2c94a68bec1203ae8f8e622"
 client_secret = "28d7df9c67064ee4bfe24ae0083a97cc"
 
@@ -102,3 +101,31 @@ def get_collaborations(name: str):
                         collaborators.append(artist['name'])
 
     return set(collaborators)
+
+def build_collaboration_graph(graph: Graph, artist_name: str, depth: int, visited: set[str] = None) -> None:
+    """
+    Recursively build a graph of artist collaborations starting from the given artist."""
+    if visited is None:
+        visited = set()
+
+    if artist_name in visited or depth < 0:
+        return
+
+    visited.add(artist_name)
+
+    artist_info = get_artist(artist_name)
+    if artist_info is None:
+        return
+
+    graph.add_vertex(artist_name, artist_info)
+
+    if depth > 0:
+        collaborators = get_collaborations(artist_name)
+        for collaborator in collaborators:
+            if collaborator not in visited:
+                collaborator_info = get_artist(collaborator)
+                if collaborator_info:
+                    graph.add_vertex(collaborator, collaborator_info)
+                    graph.add_edge(artist_name, collaborator)
+                    build_collaboration_graph(graph, collaborator, depth - 1, visited)
+
