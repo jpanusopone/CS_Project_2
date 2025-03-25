@@ -1,5 +1,7 @@
+from __future__ import annotations
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
+from typing import Any
 
 class _Vertex:
     """A vertex in a graph.
@@ -7,18 +9,21 @@ class _Vertex:
     Instance Attributes:
         - item: The data stored in this vertex.
         - neighbours: The vertices that are adjacent to this vertex.
+        - info: The artist information from the api,
 
     Representation Invariants:
         - self not in self.neighbours
         - all(self in u.neighbours for u in self.neighbours)
     """
-    item: Any
+    info: dict[str, Any]
     neighbours: set[_Vertex]
+    name: str
 
-    def __init__(self, item: Any, neighbours: set[_Vertex]) -> None:
+    def __init__(self, name: str, neighbours: set[_Vertex],info: dict[str, Any]) -> None:
         """Initialize a new vertex with the given item and neighbours."""
-        self.item = item
+        self.name = name
         self.neighbours = neighbours
+        self.info = info
 
 class Graph:
     """A graph.
@@ -30,13 +35,13 @@ class Graph:
     #     - _vertices:
     #         A collection of the vertices contained in this graph.
     #         Maps item to _Vertex object.
-    _vertices: dict[Any, _Vertex]
+    _vertices: dict[str, _Vertex]
 
     def __init__(self) -> None:
         """Initialize an empty graph (no vertices or edges)."""
         self._vertices = {}
 
-    def add_vertex(self, item: Any) -> None:
+    def add_vertex(self, name: Any, info: dict[str, Any]) -> None:
         """Add a vertex with the given item to this graph.
 
         The new vertex is not adjacent to any other vertices.
@@ -44,26 +49,24 @@ class Graph:
         Preconditions:
             - item not in self._vertices
         """
-        if item not in self._vertices:
-            self._vertices[item] = _Vertex(item, set())
+        if name not in self._vertices:
+            self._vertices[name] = _Vertex(name, set(), info)
 
-    def add_edge(self, item1: Any, item2: Any) -> None:
+    def add_edge(self, name1: Any, name2: Any) -> None:
         """Add an edge between the two vertices with the given items in this graph.
 
-        Raise a ValueError if item1 or item2 do not appear as vertices in this graph.
+        Raise a ValueError if name1 or name2 do not appear as vertices in this graph.
 
         Preconditions:
             - item1 != item2
         """
-        if item1 in self._vertices and item2 in self._vertices:
-            v1 = self._vertices[item1]
-            v2 = self._vertices[item2]
+        if name1 in self._vertices and name2 in self._vertices:
+            v1 = self._vertices[name1]
+            v2 = self._vertices[name2]
 
-            # Add the new edge
             v1.neighbours.add(v2)
             v2.neighbours.add(v1)
         else:
-            # We didn't find an existing vertex for both items.
             raise ValueError
 
 
@@ -74,7 +77,7 @@ client_secret = "28d7df9c67064ee4bfe24ae0083a97cc"
 auth_manager = SpotifyClientCredentials(client_id, client_secret)
 sp = spotipy.Spotify(auth_manager = auth_manager)
 
-def get_artist(name):
+def get_artist(name: str):
     results = sp.search(q = name, limit = 1, type = "artist")
     artist = results['artists']['items'][0]
     info = {
@@ -86,7 +89,7 @@ def get_artist(name):
     return info
 
 
-def get_collaborations(name):
+def get_collaborations(name: str):
     artist_id = get_artist(name)["artist_id"]
     albums = sp.artist_albums(artist_id, album_type='album', limit=5)
     collaborators = []
