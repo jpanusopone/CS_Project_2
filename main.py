@@ -2,6 +2,9 @@ from __future__ import annotations
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from typing import Any
+import networkx as nx
+import matplotlib.pyplot as plt
+
 
 class _Vertex:
     """A vertex in a graph.
@@ -129,3 +132,19 @@ def build_collaboration_graph(graph: Graph, artist_name: str, depth: int, visite
                     graph.add_edge(artist_name, collaborator)
                     build_collaboration_graph(graph, collaborator, depth - 1, visited)
 
+def display_graph(graph: Graph) -> None:
+    """Display the artist collaboration graph using NetworkX and Matplotlib."""
+    G = nx.Graph()
+
+    for artist in graph._vertices:
+        G.add_node(artist)
+
+    for artist, vertex in graph._vertices.items():
+        for neighbor in vertex.neighbours:
+            G.add_edge(artist, neighbor.name)
+
+    plt.figure(figsize=(10, 8))
+    pos = nx.spring_layout(G, seed=42)
+    nx.draw(G, pos, with_labels=True, node_size=3000, node_color="skyblue", font_size=8, edge_color="gray")
+    plt.title("Artist Collaboration Graph")
+    plt.show()
