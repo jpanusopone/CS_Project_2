@@ -1,9 +1,11 @@
 from __future__ import annotations
 import spotipy
+from pyvis.network import Network
 from spotipy.oauth2 import SpotifyClientCredentials
 from typing import Any
 import networkx as nx
 import matplotlib.pyplot as plt
+import pyvis
 
 
 class _Vertex:
@@ -146,5 +148,10 @@ def display_graph(graph: Graph) -> None:
     plt.figure(figsize=(10, 8))
     pos = nx.spring_layout(G, seed=42)
     nx.draw(G, pos, with_labels=True, node_size=3000, node_color="skyblue", font_size=8, edge_color="gray")
-    plt.title("Artist Collaboration Graph")
-    plt.show()
+    # plt.title("Artist Collaboration Graph")
+    # plt.show()
+
+    nt = Network("500px", "500px")
+    nt.from_nx(G)
+    nt.generate_html(name='index.html', local=True, notebook=False)
+    nt.save_graph("graph.html")
