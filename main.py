@@ -4,8 +4,6 @@ from pyvis.network import Network
 from spotipy.oauth2 import SpotifyClientCredentials
 from typing import Any
 import networkx as nx
-import matplotlib.pyplot as plt
-import pyvis
 
 
 class _Vertex:
@@ -134,24 +132,45 @@ def build_collaboration_graph(graph: Graph, artist_name: str, depth: int, visite
                     graph.add_edge(artist_name, collaborator)
                     build_collaboration_graph(graph, collaborator, depth - 1, visited)
 
-def display_graph(graph: Graph) -> None:
-    """Display the artist collaboration graph using NetworkX and Matplotlib."""
+def build_networkx(graph: Graph) -> nx.Graph:
     G = nx.Graph()
-
-    for artist in graph._vertices:
+    for artist, vertex in graph._vertices.items():
         G.add_node(artist)
-
     for artist, vertex in graph._vertices.items():
         for neighbor in vertex.neighbours:
             G.add_edge(artist, neighbor.name)
+    return G
 
-    plt.figure(figsize=(10, 8))
-    pos = nx.spring_layout(G, seed=42)
-    nx.draw(G, pos, with_labels=True, node_size=3000, node_color="skyblue", font_size=8, edge_color="gray")
-    # plt.title("Artist Collaboration Graph")
-    # plt.show()
+def display_graph(graph: Graph) -> None:
+    """Display the artist collaboration graph using NetworkX and PyVis"""
 
-    nt = Network("500px", "500px")
-    nt.from_nx(G)
+    nt = Network("100vh", "100vw")
+
+    for artist, vertex in graph._vertices.items():
+        popularity = vertex.info['popularity']
+        genres = vertex.info['genres']
+        genre_str = ", ".join(genres) if genres else ""
+        spotify_link = f"https://open.spotify.com/artist/{vertex.info['artist_id']}"
+
+        if popularity >= 70:
+            color = "blue"
+        elif popularity >= 50:
+            color = "red"
+        else:
+            color = "green"
+
+        title = f"""
+                <b>{artist}</b><br>
+                Genres: {genre_str}<br>
+                Popularity: {popularity}<br>
+                <a href='{spotify_link}' target='_blank'>Open in Spotify</a>
+                """
+
+        nt.add_node(artist, label=artist, title=title, color=color)
+
+    for artist, vertex in graph._vertices.items():
+        for neighbor in vertex.neighbours:
+            nt.add_edge(artist, neighbor.name)
+
     nt.generate_html(name='index.html', local=True, notebook=False)
     nt.save_graph("graph.html")
