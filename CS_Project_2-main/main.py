@@ -261,11 +261,11 @@ def display_graph(graph: Graph) -> None:
     nt.save_graph("graph.html")
     webbrowser.open_new_tab('graph.html')
 
-graph = Graph()
+main_graph = Graph()
 prompt_artist = input("What artist would you like to analyse? ")
 prompt_depth = int(input("How many graph levels do you want? 2 or 3 recommended "))
 print("Please wait.......")
 
-build_collaboration_graph(graph, prompt_artist, prompt_depth)
-display_graph(graph)
-analyse_graph(graph, 15)
+build_collaboration_graph(main_graph, prompt_artist, prompt_depth)
+display_graph(main_graph)
+analyse_graph(main_graph, 15)
