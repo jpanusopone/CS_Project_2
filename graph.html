@@ -41,75 +41,6 @@
              }
 
              
-             #loadingBar {
-                 position:absolute;
-                 top:0px;
-                 left:0px;
-                 width: 500px;
-                 height: 500px;
-                 background-color:rgba(200,200,200,0.8);
-                 -webkit-transition: all 0.5s ease;
-                 -moz-transition: all 0.5s ease;
-                 -ms-transition: all 0.5s ease;
-                 -o-transition: all 0.5s ease;
-                 transition: all 0.5s ease;
-                 opacity:1;
-             }
-
-             #bar {
-                 position:absolute;
-                 top:0px;
-                 left:0px;
-                 width:20px;
-                 height:20px;
-                 margin:auto auto auto auto;
-                 border-radius:11px;
-                 border:2px solid rgba(30,30,30,0.05);
-                 background: rgb(0, 173, 246); /* Old browsers */
-                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
-             }
-
-             #border {
-                 position:absolute;
-                 top:10px;
-                 left:10px;
-                 width:500px;
-                 height:23px;
-                 margin:auto auto auto auto;
-                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
-                 border-radius:10px;
-             }
-
-             #text {
-                 position:absolute;
-                 top:8px;
-                 left:530px;
-                 width:30px;
-                 height:50px;
-                 margin:auto auto auto auto;
-                 font-size:22px;
-                 color: #000000;
-             }
-
-             div.outerBorder {
-                 position:relative;
-                 top:400px;
-                 width:600px;
-                 height:44px;
-                 margin:auto auto auto auto;
-                 border:8px solid rgba(0,0,0,0.1);
-                 background: rgb(252,252,252); /* Old browsers */
-                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
-                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
-                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
-                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
-                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
-                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
-                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
-                 border-radius:72px;
-                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
-             }
-             
 
              
 
@@ -125,15 +56,6 @@
             <div id="mynetwork" class="card-body"></div>
         </div>
 
-        
-            <div id="loadingBar">
-              <div class="outerBorder">
-                <div id="text">0%</div>
-                <div id="border">
-                  <div id="bar"></div>
-                </div>
-              </div>
-            </div>
         
         
 
@@ -166,8 +88,8 @@
                   
 
                   // parsing and collecting nodes and edges from the python
-                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "Drake", "label": "Drake", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "PARTYNEXTDOOR", "label": "PARTYNEXTDOOR", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Teezo Touchdown", "label": "Teezo Touchdown", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Chief Keef", "label": "Chief Keef", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "SZA", "label": "SZA", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "21 Savage", "label": "21 Savage", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Yeat", "label": "Yeat", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "J. Cole", "label": "J. Cole", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Foushe\u00e9", "label": "Foushe\u00e9", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Janelle Mon\u00e1e", "label": "Janelle Mon\u00e1e", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Isaiah Rusk", "label": "Isaiah Rusk", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Luh geeky", "label": "Luh geeky", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Lil Uzi Vert", "label": "Lil Uzi Vert", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Future", "label": "Future", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Lil Wayne", "label": "Lil Wayne", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "YoungBoy Never Broke Again", "label": "YoungBoy Never Broke Again", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Summrs", "label": "Summrs", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Don Toliver", "label": "Don Toliver", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Kodak Black", "label": "Kodak Black", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Kranky Kranky", "label": "Kranky Kranky", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Lil Durk", "label": "Lil Durk", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "OG Ron C", "label": "OG Ron C", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Rihanna", "label": "Rihanna", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Lil Yachty", "label": "Lil Yachty", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Quavo", "label": "Quavo", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Bad Bunny", "label": "Bad Bunny", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Yebba", "label": "Yebba", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Chino Pacas", "label": "Chino Pacas", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "DJ Candlestick", "label": "DJ Candlestick", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Murda Beatz", "label": "Murda Beatz", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Nipsey Hussle", "label": "Nipsey Hussle", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Pimmie", "label": "Pimmie", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Travis Scott", "label": "Travis Scott", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Tommy Newport", "label": "Tommy Newport", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Burna Boy", "label": "Burna Boy", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Mariah the Scientist", "label": "Mariah the Scientist", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Summer Walker", "label": "Summer Walker", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Mikky Ekko", "label": "Mikky Ekko", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Brent Faiyaz", "label": "Brent Faiyaz", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Doja Cat", "label": "Doja Cat", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Young Thug", "label": "Young Thug", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Metro Boomin", "label": "Metro Boomin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "The Weeknd", "label": "The Weeknd", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Jay Rock", "label": "Jay Rock", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Hadiya Eshe\u2019", "label": "Hadiya Eshe\u2019", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Isaiah Rashad", "label": "Isaiah Rashad", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "2 Chainz", "label": "2 Chainz", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Nik Dodani", "label": "Nik Dodani", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Kendrick Lamar", "label": "Kendrick Lamar", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "James Blake", "label": "James Blake", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "SOB X RBE", "label": "SOB X RBE", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Zacari", "label": "Zacari", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Colton Ryan", "label": "Colton Ryan", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Dan + Shay", "label": "Dan + Shay", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "James Fauntleroy", "label": "James Fauntleroy", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Tori Kelly", "label": "Tori Kelly", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "DeMarius Copes", "label": "DeMarius Copes", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Amy Adams", "label": "Amy Adams", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Mozzy", "label": "Mozzy", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Isaac Powell", "label": "Isaac Powell", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "ScHoolboy Q", "label": "ScHoolboy Q", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Sjava", "label": "Sjava", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Anderson .Paak", "label": "Anderson .Paak", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Saudi", "label": "Saudi", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Danny Pino", "label": "Danny Pino", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Dear Evan Hansen Choir", "label": "Dear Evan Hansen Choir", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Amandla Stenberg", "label": "Amandla Stenberg", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Khalid", "label": "Khalid", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Julianne Moore", "label": "Julianne Moore", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Ben Platt", "label": "Ben Platt", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "FINNEAS", "label": "FINNEAS", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Liz Kate", "label": "Liz Kate", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Phoebe Bridgers", "label": "Phoebe Bridgers", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "REASON", "label": "REASON", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Jorja Smith", "label": "Jorja Smith", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Ol\u0027 Dirty Bastard", "label": "Ol\u0027 Dirty Bastard", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Vince Staples", "label": "Vince Staples", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Kaitlyn Dever", "label": "Kaitlyn Dever", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Ab-Soul", "label": "Ab-Soul", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Yugen Blakrok", "label": "Yugen Blakrok", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Babes Wodumo", "label": "Babes Wodumo", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Sam Smith", "label": "Sam Smith", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Swae Lee", "label": "Swae Lee", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Carrie Underwood", "label": "Carrie Underwood", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Gino Marley", "label": "Gino Marley", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Mike WiLL Made-It", "label": "Mike WiLL Made-It", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "DJ KENN AON", "label": "DJ KENN AON", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Lil Reese", "label": "Lil Reese", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Jeezy", "label": "Jeezy", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Ballout", "label": "Ballout", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Wiz Khalifa", "label": "Wiz Khalifa", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Sexyy Red", "label": "Sexyy Red", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Tadoe", "label": "Tadoe", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "French Montana", "label": "French Montana", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Rick Ross", "label": "Rick Ross", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "G Herbo", "label": "G Herbo", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "50 Cent", "label": "50 Cent", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Tierra Whack", "label": "Tierra Whack", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Lil Gnar", "label": "Lil Gnar", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Young Dro", "label": "Young Dro", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Ari Lennox", "label": "Ari Lennox", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Central Cee", "label": "Central Cee", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Gucci Mane", "label": "Gucci Mane", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Brandon Hines", "label": "Brandon Hines", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Daylyt", "label": "Daylyt", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Bone Thugs-N-Harmony", "label": "Bone Thugs-N-Harmony", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Wale", "label": "Wale", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Omen", "label": "Omen", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Bas", "label": "Bas", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Cam\u0027ron", "label": "Cam\u0027ron", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Lee Fields \u0026 The Expressions", "label": "Lee Fields \u0026 The Expressions", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Deacon", "label": "Deacon", "shape": "dot", "size": 10}]);
-                  edges = new vis.DataSet([{"from": "Drake", "to": "PARTYNEXTDOOR", "width": 1}, {"from": "Drake", "to": "Teezo Touchdown", "width": 1}, {"from": "Drake", "to": "Chief Keef", "width": 1}, {"from": "Drake", "to": "SZA", "width": 1}, {"from": "Drake", "to": "21 Savage", "width": 1}, {"from": "Drake", "to": "Yeat", "width": 1}, {"from": "Drake", "to": "J. Cole", "width": 1}, {"from": "Teezo Touchdown", "to": "Foushe\u00e9", "width": 1}, {"from": "Teezo Touchdown", "to": "Janelle Mon\u00e1e", "width": 1}, {"from": "Teezo Touchdown", "to": "Isaiah Rusk", "width": 1}, {"from": "Yeat", "to": "Luh geeky", "width": 1}, {"from": "Yeat", "to": "Lil Uzi Vert", "width": 1}, {"from": "Yeat", "to": "Future", "width": 1}, {"from": "Yeat", "to": "Lil Wayne", "width": 1}, {"from": "Yeat", "to": "YoungBoy Never Broke Again", "width": 1}, {"from": "Yeat", "to": "Summrs", "width": 1}, {"from": "Yeat", "to": "Don Toliver", "width": 1}, {"from": "Yeat", "to": "Kodak Black", "width": 1}, {"from": "Yeat", "to": "Kranky Kranky", "width": 1}, {"from": "Yeat", "to": "Lil Durk", "width": 1}, {"from": "PARTYNEXTDOOR", "to": "OG Ron C", "width": 1}, {"from": "PARTYNEXTDOOR", "to": "Rihanna", "width": 1}, {"from": "PARTYNEXTDOOR", "to": "Lil Yachty", "width": 1}, {"from": "PARTYNEXTDOOR", "to": "Quavo", "width": 1}, {"from": "PARTYNEXTDOOR", "to": "Bad Bunny", "width": 1}, {"from": "PARTYNEXTDOOR", "to": "Yebba", "width": 1}, {"from": "PARTYNEXTDOOR", "to": "Chino Pacas", "width": 1}, {"from": "PARTYNEXTDOOR", "to": "DJ Candlestick", "width": 1}, {"from": "PARTYNEXTDOOR", "to": "Murda Beatz", "width": 1}, {"from": "PARTYNEXTDOOR", "to": "Nipsey Hussle", "width": 1}, {"from": "PARTYNEXTDOOR", "to": "Pimmie", "width": 1}, {"from": "21 Savage", "to": "Travis Scott", "width": 1}, {"from": "21 Savage", "to": "Tommy Newport", "width": 1}, {"from": "21 Savage", "to": "Burna Boy", "width": 1}, {"from": "21 Savage", "to": "Mariah the Scientist", "width": 1}, {"from": "21 Savage", "to": "Summer Walker", "width": 1}, {"from": "21 Savage", "to": "Mikky Ekko", "width": 1}, {"from": "21 Savage", "to": "Brent Faiyaz", "width": 1}, {"from": "21 Savage", "to": "Doja Cat", "width": 1}, {"from": "21 Savage", "to": "Young Thug", "width": 1}, {"from": "21 Savage", "to": "Metro Boomin", "width": 1}, {"from": "SZA", "to": "The Weeknd", "width": 1}, {"from": "SZA", "to": "Jay Rock", "width": 1}, {"from": "SZA", "to": "Hadiya Eshe\u2019", "width": 1}, {"from": "SZA", "to": "Isaiah Rashad", "width": 1}, {"from": "SZA", "to": "2 Chainz", "width": 1}, {"from": "SZA", "to": "Nik Dodani", "width": 1}, {"from": "SZA", "to": "Kendrick Lamar", "width": 1}, {"from": "SZA", "to": "James Blake", "width": 1}, {"from": "SZA", "to": "SOB X RBE", "width": 1}, {"from": "SZA", "to": "Zacari", "width": 1}, {"from": "SZA", "to": "Colton Ryan", "width": 1}, {"from": "SZA", "to": "Dan + Shay", "width": 1}, {"from": "SZA", "to": "James Fauntleroy", "width": 1}, {"from": "SZA", "to": "Tori Kelly", "width": 1}, {"from": "SZA", "to": "DeMarius Copes", "width": 1}, {"from": "SZA", "to": "Amy Adams", "width": 1}, {"from": "SZA", "to": "Mozzy", "width": 1}, {"from": "SZA", "to": "Isaac Powell", "width": 1}, {"from": "SZA", "to": "ScHoolboy Q", "width": 1}, {"from": "SZA", "to": "Sjava", "width": 1}, {"from": "SZA", "to": "Anderson .Paak", "width": 1}, {"from": "SZA", "to": "Saudi", "width": 1}, {"from": "SZA", "to": "Danny Pino", "width": 1}, {"from": "SZA", "to": "Dear Evan Hansen Choir", "width": 1}, {"from": "SZA", "to": "Amandla Stenberg", "width": 1}, {"from": "SZA", "to": "Khalid", "width": 1}, {"from": "SZA", "to": "Julianne Moore", "width": 1}, {"from": "SZA", "to": "Ben Platt", "width": 1}, {"from": "SZA", "to": "FINNEAS", "width": 1}, {"from": "SZA", "to": "Liz Kate", "width": 1}, {"from": "SZA", "to": "Phoebe Bridgers", "width": 1}, {"from": "SZA", "to": "REASON", "width": 1}, {"from": "SZA", "to": "Jorja Smith", "width": 1}, {"from": "SZA", "to": "Ol\u0027 Dirty Bastard", "width": 1}, {"from": "SZA", "to": "Vince Staples", "width": 1}, {"from": "SZA", "to": "Kaitlyn Dever", "width": 1}, {"from": "SZA", "to": "Ab-Soul", "width": 1}, {"from": "SZA", "to": "Yugen Blakrok", "width": 1}, {"from": "SZA", "to": "Babes Wodumo", "width": 1}, {"from": "SZA", "to": "Sam Smith", "width": 1}, {"from": "SZA", "to": "Swae Lee", "width": 1}, {"from": "SZA", "to": "Carrie Underwood", "width": 1}, {"from": "Chief Keef", "to": "Gino Marley", "width": 1}, {"from": "Chief Keef", "to": "Mike WiLL Made-It", "width": 1}, {"from": "Chief Keef", "to": "DJ KENN AON", "width": 1}, {"from": "Chief Keef", "to": "Lil Reese", "width": 1}, {"from": "Chief Keef", "to": "Jeezy", "width": 1}, {"from": "Chief Keef", "to": "Ballout", "width": 1}, {"from": "Chief Keef", "to": "Wiz Khalifa", "width": 1}, {"from": "Chief Keef", "to": "Sexyy Red", "width": 1}, {"from": "Chief Keef", "to": "Tadoe", "width": 1}, {"from": "Chief Keef", "to": "French Montana", "width": 1}, {"from": "Chief Keef", "to": "Rick Ross", "width": 1}, {"from": "Chief Keef", "to": "G Herbo", "width": 1}, {"from": "Chief Keef", "to": "50 Cent", "width": 1}, {"from": "Chief Keef", "to": "Tierra Whack", "width": 1}, {"from": "Chief Keef", "to": "Lil Gnar", "width": 1}, {"from": "J. Cole", "to": "Young Dro", "width": 1}, {"from": "J. Cole", "to": "Ari Lennox", "width": 1}, {"from": "J. Cole", "to": "Central Cee", "width": 1}, {"from": "J. Cole", "to": "Gucci Mane", "width": 1}, {"from": "J. Cole", "to": "Brandon Hines", "width": 1}, {"from": "J. Cole", "to": "Daylyt", "width": 1}, {"from": "J. Cole", "to": "Bone Thugs-N-Harmony", "width": 1}, {"from": "J. Cole", "to": "Wale", "width": 1}, {"from": "J. Cole", "to": "Omen", "width": 1}, {"from": "J. Cole", "to": "Bas", "width": 1}, {"from": "J. Cole", "to": "Cam\u0027ron", "width": 1}, {"from": "J. Cole", "to": "Lee Fields \u0026 The Expressions", "width": 1}, {"from": "J. Cole", "to": "Deacon", "width": 1}]);
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "Jay Chou", "label": "Jay Chou", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "\u90b1\u51f1\u5049", "label": "\u90b1\u51f1\u5049", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Cindy Yen", "label": "Cindy Yen", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Ashin Chen", "label": "Ashin Chen", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "A-Mei Chang", "label": "A-Mei Chang", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Patrick Brasca", "label": "Patrick Brasca", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Gary Yang", "label": "Gary Yang", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "\u5b8b\u5065\u5f70(\u5f48\u982d)", "label": "\u5b8b\u5065\u5f70(\u5f48\u982d)", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Lara Liang", "label": "Lara Liang", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "\u7626\u5b50E.SO", "label": "\u7626\u5b50E.SO", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Eve Ai", "label": "Eve Ai", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "LaLa Hsu", "label": "LaLa Hsu", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Soft Lipa", "label": "Soft Lipa", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "\u9ad8\u723e\u5ba3", "label": "\u9ad8\u723e\u5ba3", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "ANGIE", "label": "ANGIE", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "8lak", "label": "8lak", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Hosea", "label": "Hosea", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "\u5a41\u5cfb\u78a9", "label": "\u5a41\u5cfb\u78a9", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Magic Power", "label": "Magic Power", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Nicky Lee", "label": "Nicky Lee", "shape": "dot", "size": 10}]);
+                  edges = new vis.DataSet([{"from": "Jay Chou", "to": "\u90b1\u51f1\u5049", "width": 1}, {"from": "Jay Chou", "to": "Cindy Yen", "width": 1}, {"from": "Jay Chou", "to": "Ashin Chen", "width": 1}, {"from": "Jay Chou", "to": "A-Mei Chang", "width": 1}, {"from": "Jay Chou", "to": "Patrick Brasca", "width": 1}, {"from": "Jay Chou", "to": "Gary Yang", "width": 1}, {"from": "Jay Chou", "to": "\u5b8b\u5065\u5f70(\u5f48\u982d)", "width": 1}, {"from": "Gary Yang", "to": "Lara Liang", "width": 1}, {"from": "A-Mei Chang", "to": "\u7626\u5b50E.SO", "width": 1}, {"from": "A-Mei Chang", "to": "Eve Ai", "width": 1}, {"from": "A-Mei Chang", "to": "LaLa Hsu", "width": 1}, {"from": "A-Mei Chang", "to": "Soft Lipa", "width": 1}, {"from": "Patrick Brasca", "to": "\u9ad8\u723e\u5ba3", "width": 1}, {"from": "Patrick Brasca", "to": "ANGIE", "width": 1}, {"from": "Patrick Brasca", "to": "8lak", "width": 1}, {"from": "Patrick Brasca", "to": "Hosea", "width": 1}, {"from": "Patrick Brasca", "to": "\u5a41\u5cfb\u78a9", "width": 1}, {"from": "Cindy Yen", "to": "Magic Power", "width": 1}, {"from": "Cindy Yen", "to": "Nicky Lee", "width": 1}]);
 
                   nodeColors = {};
                   allNodes = nodes.get({ returnType: "Object" });
@@ -222,23 +144,6 @@
                   
 
 
-                  
-                      network.on("stabilizationProgress", function(params) {
-                          document.getElementById('loadingBar').removeAttribute("style");
-                          var maxWidth = 496;
-                          var minWidth = 20;
-                          var widthFactor = params.iterations/params.total;
-                          var width = Math.max(minWidth,maxWidth * widthFactor);
-                          document.getElementById('bar').style.width = width + 'px';
-                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
-                      });
-                      network.once("stabilizationIterationsDone", function() {
-                          document.getElementById('text').innerHTML = '100%';
-                          document.getElementById('bar').style.width = '496px';
-                          document.getElementById('loadingBar').style.opacity = 0;
-                          // really clean the dom element
-                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
-                      });
                   
 
                   return network;

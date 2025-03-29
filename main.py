@@ -5,7 +5,6 @@ from spotipy.oauth2 import SpotifyClientCredentials
 from typing import Any
 import networkx as nx
 import matplotlib.pyplot as plt
-import pyvis
 
 
 class _Vertex:
