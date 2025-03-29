@@ -1,12 +1,12 @@
 <html>
     <head>
         <meta charset="utf-8">
-        
+
             <script src="lib/bindings/utils.js"></script>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
             <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-            
-        
+
+
 <center>
 <h1></h1>
 </center>
@@ -40,24 +40,24 @@
                  float: left;
              }
 
-             
 
-             
 
-             
+
+
+
         </style>
     </head>
 
 
     <body>
         <div class="card" style="width: 100%">
-            
-            
+
+
             <div id="mynetwork" class="card-body"></div>
         </div>
 
-        
-        
+
+
 
         <script type="text/javascript">
 
@@ -77,15 +77,15 @@
                   value : []
               };
 
-              
 
-              
+
+
 
               // This method is responsible for drawing the graph, returns the drawn network
               function drawGraph() {
                   var container = document.getElementById('mynetwork');
 
-                  
+
 
                   // parsing and collecting nodes and edges from the python
                   nodes = new vis.DataSet([{"color": "#97c2fc", "id": "Jay Chou", "label": "Jay Chou", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "\u90b1\u51f1\u5049", "label": "\u90b1\u51f1\u5049", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Cindy Yen", "label": "Cindy Yen", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Ashin Chen", "label": "Ashin Chen", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "A-Mei Chang", "label": "A-Mei Chang", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Patrick Brasca", "label": "Patrick Brasca", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Gary Yang", "label": "Gary Yang", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "\u5b8b\u5065\u5f70(\u5f48\u982d)", "label": "\u5b8b\u5065\u5f70(\u5f48\u982d)", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Lara Liang", "label": "Lara Liang", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "\u7626\u5b50E.SO", "label": "\u7626\u5b50E.SO", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Eve Ai", "label": "Eve Ai", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "LaLa Hsu", "label": "LaLa Hsu", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Soft Lipa", "label": "Soft Lipa", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "\u9ad8\u723e\u5ba3", "label": "\u9ad8\u723e\u5ba3", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "ANGIE", "label": "ANGIE", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "8lak", "label": "8lak", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Hosea", "label": "Hosea", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "\u5a41\u5cfb\u78a9", "label": "\u5a41\u5cfb\u78a9", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Magic Power", "label": "Magic Power", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Nicky Lee", "label": "Nicky Lee", "shape": "dot", "size": 10}]);
@@ -130,21 +130,21 @@
     }
 };
 
-                  
 
 
-                  
+
+
 
                   network = new vis.Network(container, data, options);
 
-                  
-
-                  
-
-                  
 
 
-                  
+
+
+
+
+
+
 
                   return network;
 
