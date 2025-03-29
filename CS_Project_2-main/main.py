@@ -7,6 +7,7 @@ from spotipy.oauth2 import SpotifyClientCredentials
 from typing import Any
 import networkx as nx
 import webbrowser
+import math
 
 
 class _Vertex:
@@ -31,6 +32,9 @@ class _Vertex:
         self.neighbours = neighbours
         self.info = info
 
+    def degree(self) -> int:
+        """Calculate the degree of this vertex."""
+        return len(self.neighbours)
 
 class Graph:
     """A graph.
@@ -112,10 +116,22 @@ def get_artist(name: str):
         "artist_id": artist['id'],
         "genres": artist['genres'],
         "popularity": artist['popularity'],
-        "followers": artist["followers"]["total"]
+        "followers": artist["followers"]["total"],
     }
+    info['influence'] = calculate_influence(info)
     return info
 
+
+def calculate_influence(artist_info: dict) -> int:
+    """Calculate an artist's influence score based on popularity and follower count."""
+
+    popularity = artist_info['popularity']
+    followers = artist_info['followers']
+
+    # Avoid log(0) by adding 1
+    influence_score = popularity * math.log10(followers + 1)
+
+    return int(influence_score)
 
 def get_collaborations(name: str):
     """Filler
@@ -132,7 +148,6 @@ def get_collaborations(name: str):
                         collaborators.append(artist['name'])
 
     return set(collaborators)
-
 
 def build_collaboration_graph(graph: Graph, artist_name: str, depth: int, visited: set[str] = None) -> None:
     """
@@ -174,6 +189,36 @@ def build_networkx(graph: Graph) -> nx.Graph:
             nx_graph.add_edge(artist, neighbour.name)
     return nx_graph
 
+def top_influential(graph: Graph, n:int) -> list:
+    """Print the top n most influential artists."""
+    vertices = graph.get_vertices()
+    influences = [(vertex.name, vertex.info["influence"]) for vertex in vertices]
+
+    sorted_influences = sorted(influences, key=lambda x: x[1], reverse=True)
+    top_n = [f"{artist[0]}" + "," + f"{artist[1]}" for artist in sorted_influences[:n]]
+
+    return top_n
+
+def top_degree(graph: Graph, n:int) -> list:
+    """Print the top n most degree artists."""
+    vertices = graph.get_vertices()
+    degrees = [(vertex.name, vertex.degree()) for vertex in vertices]
+
+    sorted_influences = sorted(degrees, key=lambda x: (x[1],x[0]), reverse=True)
+    top_d = [f"{artist[0]}" + "," + f"{artist[1]}" for artist in sorted_influences[:n]]
+
+    return top_d
+
+def analyse_graph(graph: Graph, depth) -> None:
+    inf = top_influential(graph, depth)
+    deg =  top_degree(graph, depth)
+    print("Top Influential Artists:")
+    for artist in inf:
+        print(artist)
+
+    print("Most Connected Artists:")
+    for artist in deg:
+        print(artist)
 
 def display_graph(graph: Graph) -> None:
     """Display the artist collaboration graph using NetworkX and PyVis"""
@@ -186,6 +231,7 @@ def display_graph(graph: Graph) -> None:
         genres = vertex.info['genres']
         genre_str = ", ".join(genres) if genres else ""
         followers = vertex.info['followers']
+        influence = vertex.info['influence']
         spotify_link = f"https://open.spotify.com/artist/{vertex.info['artist_id']}"
 
         if popularity >= 70:
@@ -200,6 +246,7 @@ def display_graph(graph: Graph) -> None:
                 Genres: {genre_str}<br>
                 Popularity: {popularity}<br>
                 Followers: {followers}<br>
+                Influence: {influence}
                 <a href='{spotify_link}' target='_blank'>Open in Spotify</a>
                 """
 
@@ -213,3 +260,12 @@ def display_graph(graph: Graph) -> None:
     nt.generate_html(name='index.html', local=True, notebook=False)
     nt.save_graph("graph.html")
     webbrowser.open_new_tab('graph.html')
+
+graph = Graph()
+prompt_artist = input("What artist would you like to analyse? ")
+prompt_depth = int(input("How many graph levels do you want? 2 or 3 recommended "))
+print("Please wait.......")
+
+build_collaboration_graph(graph, prompt_artist, prompt_depth)
+display_graph(graph)
+analyse_graph(graph, 15)
