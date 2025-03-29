@@ -6,6 +6,7 @@ from pyvis.network import Network
 from spotipy.oauth2 import SpotifyClientCredentials
 from typing import Any
 import networkx as nx
+import webbrowser
 
 
 class _Vertex:
@@ -110,7 +111,8 @@ def get_artist(name: str):
         "name": artist["name"],
         "artist_id": artist['id'],
         "genres": artist['genres'],
-        "popularity": artist['popularity']
+        "popularity": artist['popularity'],
+        "followers": artist["followers"]["total"]
     }
     return info
 
@@ -183,6 +185,7 @@ def display_graph(graph: Graph) -> None:
         popularity = vertex.info['popularity']
         genres = vertex.info['genres']
         genre_str = ", ".join(genres) if genres else ""
+        followers = vertex.info['followers']
         spotify_link = f"https://open.spotify.com/artist/{vertex.info['artist_id']}"
 
         if popularity >= 70:
@@ -196,6 +199,7 @@ def display_graph(graph: Graph) -> None:
                 <b>{artist}</b><br>
                 Genres: {genre_str}<br>
                 Popularity: {popularity}<br>
+                Followers: {followers}<br>
                 <a href='{spotify_link}' target='_blank'>Open in Spotify</a>
                 """
 
@@ -208,3 +212,4 @@ def display_graph(graph: Graph) -> None:
 
     nt.generate_html(name='index.html', local=True, notebook=False)
     nt.save_graph("graph.html")
+    webbrowser.open_new_tab('graph.html')
