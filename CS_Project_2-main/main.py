@@ -5,7 +5,6 @@ import spotipy
 from pyvis.network import Network
 from spotipy.oauth2 import SpotifyClientCredentials
 from typing import Any
-import networkx as nx
 import webbrowser
 import math
 
@@ -176,18 +175,6 @@ def build_collaboration_graph(graph: Graph, artist_name: str, depth: int, visite
                     graph.add_edge(artist_name, collaborator)
                     build_collaboration_graph(graph, collaborator, depth - 1, visited)
 
-
-def build_networkx(graph: Graph) -> nx.Graph:
-    """Filler
-    """
-    nx_graph = nx.Graph()
-    for artist in graph.get_vertex_items():
-        nx_graph.add_node(artist)
-    for artist in graph.get_vertex_items():
-        vertex = graph.get_vertex(artist)
-        for neighbour in vertex.neighbours:
-            nx_graph.add_edge(artist, neighbour.name)
-    return nx_graph
 
 def top_influential(graph: Graph, n:int) -> list:
     """Print the top n most influential artists."""
