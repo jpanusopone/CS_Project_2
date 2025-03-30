@@ -235,11 +235,11 @@ def display_graph(graph: Graph) -> None:
         spotify_link = f"https://open.spotify.com/artist/{vertex.info['artist_id']}"
 
         if popularity >= 70:
-            color = "blue"
-        elif popularity >= 50:
             color = "red"
+        elif popularity >= 50:
+            color = "orange"
         else:
-            color = "green"
+            color = "yellow"
 
         title = f"""
                 <b>{artist}</b><br>
@@ -263,7 +263,7 @@ def display_graph(graph: Graph) -> None:
 
 main_graph = Graph()
 prompt_artist = input("What artist would you like to analyse? ")
-prompt_depth = int(input("How many graph levels do you want? 2 or 3 recommended "))
+prompt_depth = int(input("How many graph levels do you want? 2 or 3 recommended. The more levels, the longer it takes. "))
 print("Please wait.......")
 
 build_collaboration_graph(main_graph, prompt_artist, prompt_depth)
