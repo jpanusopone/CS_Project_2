@@ -57,20 +57,26 @@ def calculate_influence(artist_info: dict) -> int:
     return int(influence_score)
 
 
-def get_collaborators(name: str, limit) -> set:
+def get_collaborators(name: str, demo: bool) -> set:
     """
     Return the set of artists who have collaborated with the given artist searching through
-    (up to) 5 of the artist's albums using the Spotify API.
+    artist's albums using the Spotify API. If demo mode is on, restrict it to 3 albums
 
     Preconditions:
         - name is a valid artist name that exists on Spotify
     """
+    limit = 3
+
     artist_info = get_artist(name)
     if not artist_info:
         return set()
 
     artist_id = artist_info["artist_id"]
-    albums = SP.artist_albums(artist_id, album_type='album')
+    if demo:
+        albums = SP.artist_albums(artist_id, album_type='album', limit=limit)
+    else:
+        albums = SP.artist_albums(artist_id, album_type='album')
+
     collaborators = []
 
     for album in albums['items']:
@@ -94,7 +100,7 @@ def get_song_collabs(song: dict, _id: str) -> list:
     return collabs
 
 
-def build_collaboration_graph(graph: CollabGraph, artist_name: str, depth: int,
+def build_collaboration_graph(graph: CollabGraph, artist_name: str, depth: int, demo: bool,
                               visited: set[str] = None) -> None:
     """
     Recursively build a collaboration graph for the artist with the given artist_name.
@@ -114,13 +120,13 @@ def build_collaboration_graph(graph: CollabGraph, artist_name: str, depth: int,
     graph.add_artist(artist_name, artist_info)
 
     if depth > 0:
-        collaborators = get_collaborators(artist_name)
+        collaborators = get_collaborators(artist_name, demo)
         for collaborator in collaborators:
             if collaborator not in visited:
                 collaborator_info = get_artist(collaborator)
                 graph.add_artist(collaborator, collaborator_info)
                 graph.add_edge(artist_name, collaborator)
-                build_collaboration_graph(graph, collaborator, depth - 1, visited)
+                build_collaboration_graph(graph, collaborator, depth - 1, demo, visited)
 
     # if depth <= 0:
     #     return
@@ -228,9 +234,12 @@ if __name__ == '__main__':
     PROMPT_DEPTH = int(input("How many levels of collaboration would you like? "
                              "We recommend 2 or 3; the more levels, the longer it will take. "))
 
+    PROMPT_DEMO = input("Would you like to enable demo mode? (yes/no): ").strip().lower()
+    DEMO_MODE = PROMPT_DEMO in ['yes', 'y']
+
     print("Please wait as we generate your collabgraph. This may take a few seconds...")
 
-    build_collaboration_graph(MAIN_GRAPH, PROMPT_ARTIST, PROMPT_DEPTH)
+    build_collaboration_graph(MAIN_GRAPH, PROMPT_ARTIST, PROMPT_DEPTH, DEMO_MODE)
     display_graph(MAIN_GRAPH)
     analyze_graph(MAIN_GRAPH, 15)
 
