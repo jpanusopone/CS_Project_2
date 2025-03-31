@@ -113,19 +113,27 @@ def build_collaboration_graph(graph: CollabGraph, artist_name: str, depth: int,
 
     graph.add_artist(artist_name, artist_info)
 
-    if depth <= 0:
-        return
+    if depth > 0:
+        collaborators = get_collaborators(artist_name)
+        for collaborator in collaborators:
+            if collaborator in visited:
+                collaborator_info = get_artist(collaborator)
+                if collaborator_info:
+                    graph.add_artist(collaborator, collaborator_info)
+                    graph.add_edge(artist_name, collaborator)
+                    build_collaboration_graph(graph, collaborator, depth - 1, visited)
 
-    collaborators = get_collaborators(artist_name)
-    for collaborator in collaborators:
-        if collaborator in visited:
-            continue
-        collaborator_info = get_artist(collaborator)
-        if not collaborator_info:
-            continue
-        graph.add_artist(collaborator, collaborator_info)
-        graph.add_edge(artist_name, collaborator)
-        build_collaboration_graph(graph, collaborator, depth - 1, visited)
+    # if depth <= 0:
+    #     return
+    #
+    # collaborators = get_collaborators(artist_name)
+    # for collaborator in collaborators:
+    #     if collaborator in visited:
+    #         collaborator_info = get_artist(collaborator)
+    #         if collaborator_info:
+    #             graph.add_artist(collaborator, collaborator_info)
+    #             graph.add_edge(artist_name, collaborator)
+    #             build_collaboration_graph(graph, collaborator, depth - 1, visited)
 
 
 def top_influential(graph: CollabGraph, n: int) -> list:
@@ -136,7 +144,7 @@ def top_influential(graph: CollabGraph, n: int) -> list:
     influences = [(vertex.name, vertex.info["influence"]) for vertex in vertices]
 
     sorted_influences = sorted(influences, key=lambda x: x[1], reverse=True)
-    top_n = [f"{artist[0]}" + "," + f"{artist[1]}" for artist in sorted_influences[:n]]
+    top_n = [f"{artist[0]}" + ", " + f"{artist[1]}" for artist in sorted_influences[:n]]
 
     return top_n
 
@@ -149,7 +157,7 @@ def top_degree(graph: CollabGraph, n: int) -> list:
     degrees = [(vertex.name, vertex.degree()) for vertex in vertices]
 
     sorted_influences = sorted(degrees, key=lambda x: (x[1], x[0]), reverse=True)
-    top_d = [f"{artist[0]}" + "," + f"{artist[1]}" for artist in sorted_influences[:n]]
+    top_d = [f"{artist[0]}" + ", " + f"{artist[1]}" for artist in sorted_influences[:n]]
 
     return top_d
 
