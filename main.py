@@ -57,7 +57,7 @@ def calculate_influence(artist_info: dict) -> int:
     return int(influence_score)
 
 
-def get_collaborators(name: str) -> set:
+def get_collaborators(name: str, limit) -> set:
     """
     Return the set of artists who have collaborated with the given artist searching through
     (up to) 5 of the artist's albums using the Spotify API.
@@ -70,7 +70,7 @@ def get_collaborators(name: str) -> set:
         return set()
 
     artist_id = artist_info["artist_id"]
-    albums = SP.artist_albums(artist_id, album_type='album', limit=5)
+    albums = SP.artist_albums(artist_id, album_type='album')
     collaborators = []
 
     for album in albums['items']:
