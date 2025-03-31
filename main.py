@@ -116,12 +116,11 @@ def build_collaboration_graph(graph: CollabGraph, artist_name: str, depth: int,
     if depth > 0:
         collaborators = get_collaborators(artist_name)
         for collaborator in collaborators:
-            if collaborator in visited:
+            if collaborator not in visited:
                 collaborator_info = get_artist(collaborator)
-                if collaborator_info:
-                    graph.add_artist(collaborator, collaborator_info)
-                    graph.add_edge(artist_name, collaborator)
-                    build_collaboration_graph(graph, collaborator, depth - 1, visited)
+                graph.add_artist(collaborator, collaborator_info)
+                graph.add_edge(artist_name, collaborator)
+                build_collaboration_graph(graph, collaborator, depth - 1, visited)
 
     # if depth <= 0:
     #     return
@@ -238,7 +237,7 @@ if __name__ == '__main__':
     import python_ta
 
     python_ta.check_all(config={
-        'extra-imports': ["spotipy", "webbrowser", "math", "pyvis.network", "spotipy.oauth2"],
+        'extra-imports': ["spotipy", "webbrowser", "math", "pyvis.network", "spotipy.oauth2", "collab_graph"],
         'allowed-io': ["analyze_graph"],
         'max-line-length': 100
     })
