@@ -186,10 +186,12 @@ def build_collaboration_graph(graph: Graph, artist_name: str, depth: int,
 def top_influential(graph: Graph, n: int) -> list:
     """Print the top n most influential artists."""
     vertices = graph.get_vertices()
-    influences = [(vertex.name, vertex.info["influence"]) for vertex in vertices]
+    influences = [(vertex.name, vertex.info["influence"])
+                  for vertex in vertices]
 
     sorted_influences = sorted(influences, key=lambda x: x[1], reverse=True)
-    top_n = [f"{artist[0]}" + "," + f"{artist[1]}" for artist in sorted_influences[:n]]
+    top_n = [f"{artist[0]}" + "," + f"{artist[1]}"
+             for artist in sorted_influences[:n]]
 
     return top_n
 
@@ -199,8 +201,10 @@ def top_degree(graph: Graph, n: int) -> list:
     vertices = graph.get_vertices()
     degrees = [(vertex.name, vertex.degree()) for vertex in vertices]
 
-    sorted_influences = sorted(degrees, key=lambda x: (x[1], x[0]), reverse=True)
-    top_d = [f"{artist[0]}" + "," + f"{artist[1]}" for artist in sorted_influences[:n]]
+    sorted_influences = sorted(degrees,
+                               key=lambda x: (x[1], x[0]), reverse=True)
+    top_d = [f"{artist[0]}" + "," + f"{artist[1]}"
+             for artist in sorted_influences[:n]]
 
     return top_d
 
@@ -230,7 +234,8 @@ def display_graph(graph: Graph) -> None:
         genre_str = ", ".join(genres) if genres else ""
         followers = vertex.info['followers']
         influence = vertex.info['influence']
-        spotify_link = f"https://open.spotify.com/artist/{vertex.info['artist_id']}"
+        spotify_link = \
+            f"https://open.spotify.com/artist/{vertex.info['artist_id']}"
 
         if popularity >= 70:
             color = "red"
@@ -260,12 +265,13 @@ def display_graph(graph: Graph) -> None:
     webbrowser.open_new_tab('graph.html')
 
 
-main_graph = Graph()
-prompt_artist = input("What artist would you like to analyse? ")
-prompt_depth = int(input("How many graph levels do you want? 2 or 3 recommended. "
+MAIN_GRAPH = Graph()
+PROMPT_ARTIST = input("What artist would you like to analyse? ")
+PROMPT_DEPTH = int(input("How many graph levels do you want? "
+                         "2 or 3 recommended. "
                          "The more levels, the longer it takes. "))
 print("Please wait.......")
 
-build_collaboration_graph(main_graph, prompt_artist, prompt_depth)
-display_graph(main_graph)
-analyse_graph(main_graph, 15)
+build_collaboration_graph(MAIN_GRAPH, PROMPT_ARTIST, PROMPT_DEPTH)
+display_graph(MAIN_GRAPH)
+analyse_graph(MAIN_GRAPH, 15)
