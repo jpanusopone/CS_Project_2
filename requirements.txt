@@ -1,0 +1,10 @@
+# File containing all the required libraries for collabgraph.
+
+# Testing and code checking
+hypothesis~=6.123.2
+pytest~=8.3.4
+python-ta~=2.9.1
+
+# Collaboration graph visualization
+spotipy~=2.25.1
+pyvis~=0.3.2

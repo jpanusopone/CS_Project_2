@@ -1,107 +1,14 @@
-"""Main file for Resonate"""
+"""Main file for collabgraph by James Li Fan, Jason Panusopone, Rui Weng, and Loago Zambe."""
 
 from __future__ import annotations
-from typing import Any
+
 import webbrowser
 import math
-
 import spotipy
 from pyvis.network import Network
 from spotipy.oauth2 import SpotifyClientCredentials
 
-
-class _Vertex:
-    """A vertex in a graph.
-
-    Instance Attributes:
-        - item: The data stored in this vertex.
-        - neighbours: The vertices that are adjacent to this vertex.
-        - info: The artist information from the api,
-
-    Representation Invariants:
-        - self not in self.neighbours
-        - all(self in u.neighbours for u in self.neighbours)
-    """
-    info: dict[str, Any]
-    neighbours: set[_Vertex]
-    name: str
-
-    def __init__(self, name: str, neighbours: set[_Vertex],
-                 info: dict[str, Any]) -> None:
-        """Initialize a new vertex with the given item and neighbours."""
-        self.name = name
-        self.neighbours = neighbours
-        self.info = info
-
-    def degree(self) -> int:
-        """Calculate the degree of this vertex."""
-        return len(self.neighbours)
-
-
-class Graph:
-    """A graph.
-
-    Representation Invariants:
-        - all(item == self._vertices[item].item for item in self._vertices)
-    """
-    # Private Instance Attributes:
-    #     - _vertices:
-    #         A collection of the vertices contained in this graph.
-    #         Maps item to _Vertex object.
-    _vertices: dict[str, _Vertex]
-
-    def __init__(self) -> None:
-        """Initialize an empty graph (no vertices or edges)."""
-        self._vertices = {}
-
-    def get_vertices(self) -> set:
-        """
-        Return the vertex set of this graph.
-        """
-        return {self._vertices[vertex] for vertex in self._vertices}
-
-    def get_vertex(self, item: dict[str, Any]) -> _Vertex:
-        """
-        Return the vertex representation of item.
-        """
-        return self._vertices[item]
-
-    def get_vertex_items(self) -> set:
-        """
-        Return a set containing the items of the vertices in this graph.
-        """
-        return set(self._vertices)
-
-    def add_vertex(self, name: Any, info: dict[str, Any]) -> None:
-        """Add a vertex with the given item to this graph.
-
-        The new vertex is not adjacent to any other vertices.
-
-        Preconditions:
-            - item not in self._vertices
-        """
-        if name not in self._vertices:
-            self._vertices[name] = _Vertex(name, set(), info)
-
-    def add_edge(self, name1: Any, name2: Any) -> None:
-        """Add an edge between the two vertices with the given
-        items in this graph.
-
-        Raise a ValueError if name1 or name2 do not
-        appear as vertices in this graph.
-
-        Preconditions:
-            - item1 != item2
-        """
-        if name1 in self._vertices and name2 in self._vertices:
-            v1 = self._vertices[name1]
-            v2 = self._vertices[name2]
-
-            v1.neighbours.add(v2)
-            v2.neighbours.add(v1)
-        else:
-            raise ValueError
-
+from collab_graph import CollabGraph
 
 CLIENT_ID = "fde1c486c2c94a68bec1203ae8f8e622"
 CLIENT_SECRET = "28d7df9c67064ee4bfe24ae0083a97cc"
@@ -111,15 +18,20 @@ SP = spotipy.Spotify(auth_manager=AUTH_MANAGER)
 
 
 def get_artist(name: str) -> dict:
-    """Retrieve artist information from the Spotify API and
-    returns a dictionary containing the artist's name, ID, genres, popularity,
-    and follower count. It also calculates and includes the artist's influence score.
+    """
+    Retrieve the information for this artist from the Spotify API and
+    return a dictionary containing the artist's name, ID, genres, popularity,
+    and follower count. Also calculates includes the artist's influence score.
 
     Preconditions:
-        - name is a valid artist name that exists on Spotify.
+        - name is a valid artist name that exists on Spotify
     """
     results = SP.search(q=name, limit=1, type="artist")
+    if not results['artists']['items']:
+        return {}
+
     artist = results['artists']['items'][0]
+
     info = {
         "name": artist["name"],
         "artist_id": artist['id'],
@@ -128,13 +40,14 @@ def get_artist(name: str) -> dict:
         "followers": artist["followers"]["total"],
     }
     info['influence'] = calculate_influence(info)
+
     return info
 
 
 def calculate_influence(artist_info: dict) -> int:
-    """Calculate an artist's influence score based on popularity and
-    follower count."""
-
+    """
+    Calculate an artist's influence score based on their popularity and follower count.
+    """
     popularity = artist_info['popularity']
     followers = artist_info['followers']
 
@@ -144,44 +57,48 @@ def calculate_influence(artist_info: dict) -> int:
     return int(influence_score)
 
 
-def get_collaborations(name: str) -> set:
-    """Returns a set of artists who have collaborated with the given artist by searching
-    through up to 5 of the artist's albums using the Spotify API.
+def get_collaborators(name: str) -> set:
+    """
+    Return the set of artists who have collaborated with the given artist searching through
+    (up to) 5 of the artist's albums using the Spotify API.
 
     Preconditions:
-        - name is a valid artist name that exists on Spotify.
+        - name is a valid artist name that exists on Spotify
     """
-    artist_id = get_artist(name)["artist_id"]
+    artist_info = get_artist(name)
+    if not artist_info:
+        return set()
+
+    artist_id = artist_info["artist_id"]
     albums = SP.artist_albums(artist_id, album_type='album', limit=5)
     collaborators = []
+
     for album in albums['items']:
         tracks = SP.album_tracks(album['id'])
         for track in tracks['items']:
-            if track['artists']:
-                for artist in track['artists']:
-                    if artist['id'] != artist_id:
-                        collaborators.append(artist['name'])
+            collaborators.extend(get_song_collabs(track, artist_id))
 
     return set(collaborators)
 
 
-"""
-DELETE THIS
-def get_track_colls(artist_id: str, track: Any | None, collaborators: list) -> list:
-    
-    if track['artists']:
-        for artist in track['artists']:
-            if artist['id'] != artist_id:
-                collaborators.append(artist['name'])
+def get_song_collabs(song: dict, _id: str) -> list:
+    """
+    Return a new list named collabs with the collaborators in this song track.
+    """
+    collabs = []
 
-    return collaborators
-"""
+    for artist in song.get('artists', []):
+        if artist['id'] != _id:
+            collabs.append(artist['name'])
+
+    return collabs
 
 
-def build_collaboration_graph(graph: Graph, artist_name: str, depth: int,
+def build_collaboration_graph(graph: CollabGraph, artist_name: str, depth: int,
                               visited: set[str] = None) -> None:
-    """Recursively build a graph of artist collaborations
-    starting from the given artist."""
+    """
+    Recursively build a collaboration graph for the artist with the given artist_name.
+    """
     if visited is None:
         visited = set()
 
@@ -194,87 +111,79 @@ def build_collaboration_graph(graph: Graph, artist_name: str, depth: int,
     if artist_info is None:
         return
 
-    graph.add_vertex(artist_name, artist_info)
+    graph.add_artist(artist_name, artist_info)
 
-    if depth > 0:
-        collaborators = get_collaborations(artist_name)
-        for collaborator in collaborators:
-            if collaborator not in visited:
-                collaborator_info = get_artist(collaborator)
-                if collaborator_info:
-                    graph.add_vertex(collaborator, collaborator_info)
-                    graph.add_edge(artist_name, collaborator)
-                    build_collaboration_graph(graph, collaborator, depth - 1, visited)
+    if depth <= 0:
+        return
 
-
-"""
-DELETE THIS
-def add_collaborator(graph: Graph, artist_name: str, depth: int,
-                     collaborator: Any, visited: set[str] = None) -> None:
-    Helper method with the same parameters of build_collaboration_graph
-    that adds a collaborator of an artist to the graph.
-
-    collaborator_info = get_artist(collaborator)
-    if collaborator_info:
-        graph.add_vertex(collaborator, collaborator_info)
+    collaborators = get_collaborators(artist_name)
+    for collaborator in collaborators:
+        if collaborator in visited:
+            continue
+        collaborator_info = get_artist(collaborator)
+        if not collaborator_info:
+            continue
+        graph.add_artist(collaborator, collaborator_info)
         graph.add_edge(artist_name, collaborator)
         build_collaboration_graph(graph, collaborator, depth - 1, visited)
-"""
 
 
-def top_influential(graph: Graph, n: int) -> list:
-    """Print the top n most influential artists."""
-    vertices = graph.get_vertices()
-    influences = [(vertex.name, vertex.info["influence"])
-                  for vertex in vertices]
+def top_influential(graph: CollabGraph, n: int) -> list:
+    """
+    Print the top n most influential artists.
+    """
+    vertices = graph.get_artists()
+    influences = [(vertex.name, vertex.info["influence"]) for vertex in vertices]
 
     sorted_influences = sorted(influences, key=lambda x: x[1], reverse=True)
-    top_n = [f"{artist[0]}" + "," + f"{artist[1]}"
-             for artist in sorted_influences[:n]]
+    top_n = [f"{artist[0]}" + "," + f"{artist[1]}" for artist in sorted_influences[:n]]
 
     return top_n
 
 
-def top_degree(graph: Graph, n: int) -> list:
-    """Print the top n most degree artists."""
-    vertices = graph.get_vertices()
+def top_degree(graph: CollabGraph, n: int) -> list:
+    """
+    Print the top n most degree artists.
+    """
+    vertices = graph.get_artists()
     degrees = [(vertex.name, vertex.degree()) for vertex in vertices]
 
-    sorted_influences = sorted(degrees,
-                               key=lambda x: (x[1], x[0]), reverse=True)
-    top_d = [f"{artist[0]}" + "," + f"{artist[1]}"
-             for artist in sorted_influences[:n]]
+    sorted_influences = sorted(degrees, key=lambda x: (x[1], x[0]), reverse=True)
+    top_d = [f"{artist[0]}" + "," + f"{artist[1]}" for artist in sorted_influences[:n]]
 
     return top_d
 
 
-def analyse_graph(graph: Graph, depth: int) -> None:
-    """Prints the graph analysis (top influence and degree) to the console."""
-    inf = top_influential(graph, depth)
-    deg = top_degree(graph, depth)
+def analyze_graph(graph: CollabGraph, num_top: int) -> None:
+    """
+    Print an analysis of the graph (artists with the most influence and high degrees) to the
+    console.
+    """
+    inf = top_influential(graph, num_top)
+    deg = top_degree(graph, num_top)
     print("Top Influential Artists:")
     for artist in inf:
         print(artist)
 
-    print("\n Most Connected Artists:")
+    print("\nMost Connected Artists:")
     for artist in deg:
         print(artist)
 
 
-def display_graph(graph: Graph) -> None:
-    """Display the artist collaboration graph using NetworkX and PyVis"""
-
+def display_graph(graph: CollabGraph) -> None:
+    """
+    Display the artist collaboration graph using NetworkX and PyVis.
+    """
     nt = Network("100vh", "100vw")
 
-    for artist in graph.get_vertex_items():
+    for artist in graph.get_artist_names():
         vertex = graph.get_vertex(artist)
         popularity = vertex.info['popularity']
         genres = vertex.info['genres']
         genre_str = ", ".join(genres) if genres else ""
         followers = vertex.info['followers']
         influence = vertex.info['influence']
-        spotify_link = \
-            f"https://open.spotify.com/artist/{vertex.info['artist_id']}"
+        spotify_link = f"https://open.spotify.com/artist/{vertex.info['artist_id']}"
 
         if popularity >= 70:
             color = "red"
@@ -294,7 +203,7 @@ def display_graph(graph: Graph) -> None:
 
         nt.add_node(artist, label=artist, title=title, color=color)
 
-    for artist in graph.get_vertex_items():
+    for artist in graph.get_artist_names():
         vertex = graph.get_vertex(artist)
         for neighbor in vertex.neighbours:
             nt.add_edge(artist, neighbor.name)
@@ -305,21 +214,23 @@ def display_graph(graph: Graph) -> None:
 
 
 if __name__ == '__main__':
-    MAIN_GRAPH = Graph()
-    PROMPT_ARTIST = input("What artist would you like to analyse? ")
-    PROMPT_DEPTH = int(input("How many graph levels do you want? "
-                             "2 or 3 recommended. "
-                             "The more levels, the longer it takes. "))
-    print("Please wait.......")
+    MAIN_GRAPH = CollabGraph()
+    print("-=-=- Welcome to collabgraph! -=-=-")
+    PROMPT_ARTIST = input("Which artist would you like to analyze? ")
+
+    PROMPT_DEPTH = int(input("How many levels of collaboration would you like? "
+                             "We recommend 2 or 3; the more levels, the longer it will take. "))
+
+    print("Please wait as we generate your collabgraph. This may take a few seconds...")
 
     build_collaboration_graph(MAIN_GRAPH, PROMPT_ARTIST, PROMPT_DEPTH)
     display_graph(MAIN_GRAPH)
-    analyse_graph(MAIN_GRAPH, 15)
+    analyze_graph(MAIN_GRAPH, 15)
 
     import python_ta
 
     python_ta.check_all(config={
         'extra-imports': ["spotipy", "webbrowser", "math", "pyvis.network", "spotipy.oauth2"],
-        'allowed-io': ["analyse_graph"],
+        'allowed-io': ["analyze_graph"],
         'max-line-length': 100
     })
