@@ -60,7 +60,7 @@ class Graph:
         """
         return {self._vertices[vertex] for vertex in self._vertices}
 
-    def get_vertex(self, item) -> _Vertex:
+    def get_vertex(self, item: dict[str, Any]) -> _Vertex:
         """
         Return the vertex representation of item.
         """
@@ -205,7 +205,7 @@ def top_degree(graph: Graph, n: int) -> list:
     return top_d
 
 
-def analyse_graph(graph: Graph, depth) -> None:
+def analyse_graph(graph: Graph, depth: int) -> None:
     """foo"""
     inf = top_influential(graph, depth)
     deg = top_degree(graph, depth)
