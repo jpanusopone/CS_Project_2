@@ -1,12 +1,13 @@
 """Main file for Resonate"""
 
 from __future__ import annotations
-import spotipy
-from pyvis.network import Network
-from spotipy.oauth2 import SpotifyClientCredentials
 from typing import Any
 import webbrowser
 import math
+
+import spotipy
+from pyvis.network import Network
+from spotipy.oauth2 import SpotifyClientCredentials
 
 
 class _Vertex:
@@ -25,7 +26,8 @@ class _Vertex:
     neighbours: set[_Vertex]
     name: str
 
-    def __init__(self, name: str, neighbours: set[_Vertex], info: dict[str, Any]) -> None:
+    def __init__(self, name: str, neighbours: set[_Vertex],
+                 info: dict[str, Any]) -> None:
         """Initialize a new vertex with the given item and neighbours."""
         self.name = name
         self.neighbours = neighbours
@@ -34,6 +36,7 @@ class _Vertex:
     def degree(self) -> int:
         """Calculate the degree of this vertex."""
         return len(self.neighbours)
+
 
 class Graph:
     """A graph.
@@ -81,9 +84,11 @@ class Graph:
             self._vertices[name] = _Vertex(name, set(), info)
 
     def add_edge(self, name1: Any, name2: Any) -> None:
-        """Add an edge between the two vertices with the given items in this graph.
+        """Add an edge between the two vertices with the given
+        items in this graph.
 
-        Raise a ValueError if name1 or name2 do not appear as vertices in this graph.
+        Raise a ValueError if name1 or name2 do not
+        appear as vertices in this graph.
 
         Preconditions:
             - item1 != item2
@@ -98,17 +103,16 @@ class Graph:
             raise ValueError
 
 
-client_id = "fde1c486c2c94a68bec1203ae8f8e622"
-client_secret = "28d7df9c67064ee4bfe24ae0083a97cc"
+CLIENT_ID = "fde1c486c2c94a68bec1203ae8f8e622"
+CLIENT_SECRET = "28d7df9c67064ee4bfe24ae0083a97cc"
 
-auth_manager = SpotifyClientCredentials(client_id, client_secret)
-sp = spotipy.Spotify(auth_manager=auth_manager)
+AUTH_MANAGER = SpotifyClientCredentials(CLIENT_ID, CLIENT_SECRET)
+SP = spotipy.Spotify(AUTH_MANAGER=AUTH_MANAGER)
 
 
-def get_artist(name: str):
-    """Filler
-    """
-    results = sp.search(q=name, limit=1, type="artist")
+def get_artist(name: str) -> dict:
+    """Filler"""
+    results = SP.search(q=name, limit=1, type="artist")
     artist = results['artists']['items'][0]
     info = {
         "name": artist["name"],
@@ -122,7 +126,8 @@ def get_artist(name: str):
 
 
 def calculate_influence(artist_info: dict) -> int:
-    """Calculate an artist's influence score based on popularity and follower count."""
+    """Calculate an artist's influence score based on popularity and
+    follower count."""
 
     popularity = artist_info['popularity']
     followers = artist_info['followers']
@@ -132,14 +137,14 @@ def calculate_influence(artist_info: dict) -> int:
 
     return int(influence_score)
 
-def get_collaborations(name: str):
-    """Filler
-    """
+
+def get_collaborations(name: str) -> set:
+    """Filler"""
     artist_id = get_artist(name)["artist_id"]
-    albums = sp.artist_albums(artist_id, album_type='album', limit=5)
+    albums = SP.artist_albums(artist_id, album_type='album', limit=5)
     collaborators = []
     for album in albums['items']:
-        tracks = sp.album_tracks(album['id'])
+        tracks = SP.album_tracks(album['id'])
         for track in tracks['items']:
             if track['artists']:
                 for artist in track['artists']:
@@ -148,9 +153,11 @@ def get_collaborations(name: str):
 
     return set(collaborators)
 
-def build_collaboration_graph(graph: Graph, artist_name: str, depth: int, visited: set[str] = None) -> None:
-    """
-    Recursively build a graph of artist collaborations starting from the given artist."""
+
+def build_collaboration_graph(graph: Graph, artist_name: str, depth: int,
+                              visited: set[str] = None) -> None:
+    """Recursively build a graph of artist collaborations
+    starting from the given artist."""
     if visited is None:
         visited = set()
 
@@ -176,7 +183,7 @@ def build_collaboration_graph(graph: Graph, artist_name: str, depth: int, visite
                     build_collaboration_graph(graph, collaborator, depth - 1, visited)
 
 
-def top_influential(graph: Graph, n:int) -> list:
+def top_influential(graph: Graph, n: int) -> list:
     """Print the top n most influential artists."""
     vertices = graph.get_vertices()
     influences = [(vertex.name, vertex.info["influence"]) for vertex in vertices]
@@ -186,19 +193,22 @@ def top_influential(graph: Graph, n:int) -> list:
 
     return top_n
 
-def top_degree(graph: Graph, n:int) -> list:
+
+def top_degree(graph: Graph, n: int) -> list:
     """Print the top n most degree artists."""
     vertices = graph.get_vertices()
     degrees = [(vertex.name, vertex.degree()) for vertex in vertices]
 
-    sorted_influences = sorted(degrees, key=lambda x: (x[1],x[0]), reverse=True)
+    sorted_influences = sorted(degrees, key=lambda x: (x[1], x[0]), reverse=True)
     top_d = [f"{artist[0]}" + "," + f"{artist[1]}" for artist in sorted_influences[:n]]
 
     return top_d
 
+
 def analyse_graph(graph: Graph, depth) -> None:
+    """foo"""
     inf = top_influential(graph, depth)
-    deg =  top_degree(graph, depth)
+    deg = top_degree(graph, depth)
     print("Top Influential Artists:")
     for artist in inf:
         print(artist)
@@ -206,6 +216,7 @@ def analyse_graph(graph: Graph, depth) -> None:
     print("Most Connected Artists:")
     for artist in deg:
         print(artist)
+
 
 def display_graph(graph: Graph) -> None:
     """Display the artist collaboration graph using NetworkX and PyVis"""
@@ -248,9 +259,11 @@ def display_graph(graph: Graph) -> None:
     nt.save_graph("graph.html")
     webbrowser.open_new_tab('graph.html')
 
+
 main_graph = Graph()
 prompt_artist = input("What artist would you like to analyse? ")
-prompt_depth = int(input("How many graph levels do you want? 2 or 3 recommended. The more levels, the longer it takes. "))
+prompt_depth = int(input("How many graph levels do you want? 2 or 3 recommended. "
+                         "The more levels, the longer it takes. "))
 print("Please wait.......")
 
 build_collaboration_graph(main_graph, prompt_artist, prompt_depth)
