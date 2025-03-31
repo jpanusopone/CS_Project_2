@@ -1,12 +1,12 @@
 <html>
     <head>
         <meta charset="utf-8">
-        
+
             <script src="lib/bindings/utils.js"></script>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
             <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-            
-        
+
+
 <center>
 <h1></h1>
 </center>
@@ -40,11 +40,11 @@
                  float: left;
              }
 
-             
 
-             
 
-             
+
+
+
              /* position absolute is important and the container has to be relative or absolute as well. */
           div.popup {
                  position:absolute;
@@ -63,20 +63,20 @@
           .vis-tooltip {
             display:none;
           }
-             
+
         </style>
     </head>
 
 
     <body>
         <div class="card" style="width: 100%">
-            
-            
+
+
             <div id="mynetwork" class="card-body"></div>
         </div>
 
-        
-        
+
+
 
         <script type="text/javascript">
 
@@ -96,15 +96,15 @@
                   value : []
               };
 
-              
 
-              
+
+
 
               // This method is responsible for drawing the graph, returns the drawn network
               function drawGraph() {
                   var container = document.getElementById('mynetwork');
 
-                  
+
 
                   // parsing and collecting nodes and edges from the python
                   nodes = new vis.DataSet([{"color": "red", "id": "Travis Scott", "label": "Travis Scott", "shape": "dot", "title": "\n                \u003cb\u003eTravis Scott\u003c/b\u003e\u003cbr\u003e\n                Genres: rap\u003cbr\u003e\n                Popularity: 94\u003cbr\u003e\n                Followers: 37859200\u003cbr\u003e\n                Influence: 712\n                \u003ca href=\u0027https://open.spotify.com/artist/0Y5tJX1MQlPlqiwlOH1tJY\u0027 target=\u0027_blank\u0027\u003eOpen in Spotify\u003c/a\u003e\n                "}, {"color": "red", "id": "PARTYNEXTDOOR", "label": "PARTYNEXTDOOR", "shape": "dot", "title": "\n                \u003cb\u003ePARTYNEXTDOOR\u003c/b\u003e\u003cbr\u003e\n                Genres: r\u0026b\u003cbr\u003e\n                Popularity: 88\u003cbr\u003e\n                Followers: 8735087\u003cbr\u003e\n                Influence: 610\n                \u003ca href=\u0027https://open.spotify.com/artist/2HPaUgqeutzr3jx5a9WyDV\u0027 target=\u0027_blank\u0027\u003eOpen in Spotify\u003c/a\u003e\n                "}, {"color": "red", "id": "J. Cole", "label": "J. Cole", "shape": "dot", "title": "\n                \u003cb\u003eJ. Cole\u003c/b\u003e\u003cbr\u003e\n                Genres: rap\u003cbr\u003e\n                Popularity: 86\u003cbr\u003e\n                Followers: 26011945\u003cbr\u003e\n                Influence: 637\n                \u003ca href=\u0027https://open.spotify.com/artist/6l3HvQ5sa6mXTsMTB19rO5\u0027 target=\u0027_blank\u0027\u003eOpen in Spotify\u003c/a\u003e\n                "}, {"color": "red", "id": "SZA", "label": "SZA", "shape": "dot", "title": "\n                \u003cb\u003eSZA\u003c/b\u003e\u003cbr\u003e\n                Genres: r\u0026b\u003cbr\u003e\n                Popularity: 94\u003cbr\u003e\n                Followers: 28560419\u003cbr\u003e\n                Influence: 700\n                \u003ca href=\u0027https://open.spotify.com/artist/7tYKF4w9nC0nq9CsPZTHyP\u0027 target=\u0027_blank\u0027\u003eOpen in Spotify\u003c/a\u003e\n                "}, {"color": "orange", "id": "Teezo Touchdown", "label": "Teezo Touchdown", "shape": "dot", "title": "\n                \u003cb\u003eTeezo Touchdown\u003c/b\u003e\u003cbr\u003e\n                Genres: \u003cbr\u003e\n                Popularity: 68\u003cbr\u003e\n                Followers: 381837\u003cbr\u003e\n                Influence: 379\n                \u003ca href=\u0027https://open.spotify.com/artist/0fGcIStdT1OpFFhOC7Wp36\u0027 target=\u0027_blank\u0027\u003eOpen in Spotify\u003c/a\u003e\n                "}, {"color": "red", "id": "Bad Bunny", "label": "Bad Bunny", "shape": "dot", "title": "\n                \u003cb\u003eBad Bunny\u003c/b\u003e\u003cbr\u003e\n                Genres: reggaeton, trap latino, latin, urbano latino\u003cbr\u003e\n                Popularity: 100\u003cbr\u003e\n                Followers: 93245789\u003cbr\u003e\n                Influence: 796\n                \u003ca href=\u0027https://open.spotify.com/artist/4q3ewBCX7sLwd24euuV69X\u0027 target=\u0027_blank\u0027\u003eOpen in Spotify\u003c/a\u003e\n                "}, {"color": "red", "id": "Lil Yachty", "label": "Lil Yachty", "shape": "dot", "title": "\n                \u003cb\u003eLil Yachty\u003c/b\u003e\u003cbr\u003e\n                Genres: \u003cbr\u003e\n                Popularity: 79\u003cbr\u003e\n                Followers: 10608550\u003cbr\u003e\n                Influence: 555\n                \u003ca href=\u0027https://open.spotify.com/artist/6icQOAFXDZKsumw3YXyusw\u0027 target=\u0027_blank\u0027\u003eOpen in Spotify\u003c/a\u003e\n                "}, {"color": "red", "id": "Sexyy Red", "label": "Sexyy Red", "shape": "dot", "title": "\n                \u003cb\u003eSexyy Red\u003c/b\u003e\u003cbr\u003e\n                Genres: \u003cbr\u003e\n                Popularity: 80\u003cbr\u003e\n                Followers: 1983923\u003cbr\u003e\n                Influence: 503\n                \u003ca href=\u0027https://open.spotify.com/artist/3DbwFQlvLxRSi2uX8mf81A\u0027 target=\u0027_blank\u0027\u003eOpen in Spotify\u003c/a\u003e\n                "}, {"color": "red", "id": "Chino Pacas", "label": "Chino Pacas", "shape": "dot", "title": "\n                \u003cb\u003eChino Pacas\u003c/b\u003e\u003cbr\u003e\n                Genres: corridos tumbados, corrido, corridos b\u00e9licos, m\u00fasica mexicana, electro corridos\u003cbr\u003e\n                Popularity: 80\u003cbr\u003e\n                Followers: 3925235\u003cbr\u003e\n                Influence: 527\n                \u003ca href=\u0027https://open.spotify.com/artist/2rmkQLzj0k4nZdQehOUByO\u0027 target=\u0027_blank\u0027\u003eOpen in Spotify\u003c/a\u003e\n                "}, {"color": "red", "id": "Yeat", "label": "Yeat", "shape": "dot", "title": "\n                \u003cb\u003eYeat\u003c/b\u003e\u003cbr\u003e\n                Genres: rage rap\u003cbr\u003e\n                Popularity: 80\u003cbr\u003e\n                Followers: 5723945\u003cbr\u003e\n                Influence: 540\n                \u003ca href=\u0027https://open.spotify.com/artist/3qiHUAX7zY4Qnjx8TNUzVx\u0027 target=\u0027_blank\u0027\u003eOpen in Spotify\u003c/a\u003e\n                "}, {"color": "red", "id": "Drake", "label": "Drake", "shape": "dot", "title": "\n                \u003cb\u003eDrake\u003c/b\u003e\u003cbr\u003e\n                Genres: rap, hip hop\u003cbr\u003e\n                Popularity: 98\u003cbr\u003e\n                Followers: 97370892\u003cbr\u003e\n                Influence: 782\n                \u003ca href=\u0027https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4\u0027 target=\u0027_blank\u0027\u003eOpen in Spotify\u003c/a\u003e\n                "}, {"color": "red", "id": "Chief Keef", "label": "Chief Keef", "shape": "dot", "title": "\n                \u003cb\u003eChief Keef\u003c/b\u003e\u003cbr\u003e\n                Genres: drill\u003cbr\u003e\n                Popularity: 77\u003cbr\u003e\n                Followers: 5555357\u003cbr\u003e\n                Influence: 519\n                \u003ca href=\u0027https://open.spotify.com/artist/15iVAtD3s3FsQR4w1v6M0P\u0027 target=\u0027_blank\u0027\u003eOpen in Spotify\u003c/a\u003e\n                "}, {"color": "orange", "id": "Pimmie", "label": "Pimmie", "shape": "dot", "title": "\n                \u003cb\u003ePimmie\u003c/b\u003e\u003cbr\u003e\n                Genres: \u003cbr\u003e\n                Popularity: 64\u003cbr\u003e\n                Followers: 30950\u003cbr\u003e\n                Influence: 287\n                \u003ca href=\u0027https://open.spotify.com/artist/30AbYddXmSkDXhnW6lB0ll\u0027 target=\u0027_blank\u0027\u003eOpen in Spotify\u003c/a\u003e\n                "}, {"color": "red", "id": "Yebba", "label": "Yebba", "shape": "dot", "title": "\n                \u003cb\u003eYebba\u003c/b\u003e\u003cbr\u003e\n                Genres: \u003cbr\u003e\n                Popularity: 74\u003cbr\u003e\n                Followers: 601910\u003cbr\u003e\n                Influence: 427\n                \u003ca href=\u0027https://open.spotify.com/artist/1ooV8YZC1KbpEcrmI8WH0F\u0027 target=\u0027_blank\u0027\u003eOpen in Spotify\u003c/a\u003e\n                "}, {"color": "red", "id": "21 Savage", "label": "21 Savage", "shape": "dot", "title": "\n                \u003cb\u003e21 Savage\u003c/b\u003e\u003cbr\u003e\n                Genres: \u003cbr\u003e\n                Popularity: 88\u003cbr\u003e\n                Followers: 22185132\u003cbr\u003e\n                Influence: 646\n                \u003ca href=\u0027https://open.spotify.com/artist/1URnnhqYAYcrqrcwql10ft\u0027 target=\u0027_blank\u0027\u003eOpen in Spotify\u003c/a\u003e\n                "}]);
@@ -149,18 +149,18 @@
     }
 };
 
-                  
 
 
-                  
+
+
 
                   network = new vis.Network(container, data, options);
 
-                  
 
-                  
 
-                  
+
+
+
                   // make a custom popup
                       var popup = document.createElement("div");
                       popup.className = 'popup';
@@ -222,10 +222,10 @@
                           popup.style.top = posDOM.y + 'px';
                           popup.style.left = posDOM.x + 'px';
                       }
-                  
 
 
-                  
+
+
 
                   return network;
 
