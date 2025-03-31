@@ -70,7 +70,7 @@ class Graph:
         """
         Return a set containing the items of the vertices in this graph.
         """
-        return {item for item in self._vertices}
+        return set(self._vertices)
 
     def add_vertex(self, name: Any, info: dict[str, Any]) -> None:
         """Add a vertex with the given item to this graph.
@@ -107,11 +107,17 @@ CLIENT_ID = "fde1c486c2c94a68bec1203ae8f8e622"
 CLIENT_SECRET = "28d7df9c67064ee4bfe24ae0083a97cc"
 
 AUTH_MANAGER = SpotifyClientCredentials(CLIENT_ID, CLIENT_SECRET)
-SP = spotipy.Spotify(AUTH_MANAGER=AUTH_MANAGER)
+SP = spotipy.Spotify(auth_manager=AUTH_MANAGER)
 
 
 def get_artist(name: str) -> dict:
-    """Filler"""
+    """Retrieve artist information from the Spotify API and
+    returns a dictionary containing the artist's name, ID, genres, popularity,
+    and follower count. It also calculates and includes the artist's influence score.
+
+    Preconditions:
+        - name is a valid artist name that exists on Spotify.
+    """
     results = SP.search(q=name, limit=1, type="artist")
     artist = results['artists']['items'][0]
     info = {
@@ -139,7 +145,12 @@ def calculate_influence(artist_info: dict) -> int:
 
 
 def get_collaborations(name: str) -> set:
-    """Filler"""
+    """Returns a set of artists who have collaborated with the given artist by searching
+    through up to 5 of the artist's albums using the Spotify API.
+
+    Preconditions:
+        - name is a valid artist name that exists on Spotify.
+    """
     artist_id = get_artist(name)["artist_id"]
     albums = SP.artist_albums(artist_id, album_type='album', limit=5)
     collaborators = []
@@ -152,6 +163,19 @@ def get_collaborations(name: str) -> set:
                         collaborators.append(artist['name'])
 
     return set(collaborators)
+
+
+"""
+DELETE THIS
+def get_track_colls(artist_id: str, track: Any | None, collaborators: list) -> list:
+    
+    if track['artists']:
+        for artist in track['artists']:
+            if artist['id'] != artist_id:
+                collaborators.append(artist['name'])
+
+    return collaborators
+"""
 
 
 def build_collaboration_graph(graph: Graph, artist_name: str, depth: int,
@@ -183,6 +207,21 @@ def build_collaboration_graph(graph: Graph, artist_name: str, depth: int,
                     build_collaboration_graph(graph, collaborator, depth - 1, visited)
 
 
+"""
+DELETE THIS
+def add_collaborator(graph: Graph, artist_name: str, depth: int,
+                     collaborator: Any, visited: set[str] = None) -> None:
+    Helper method with the same parameters of build_collaboration_graph
+    that adds a collaborator of an artist to the graph.
+
+    collaborator_info = get_artist(collaborator)
+    if collaborator_info:
+        graph.add_vertex(collaborator, collaborator_info)
+        graph.add_edge(artist_name, collaborator)
+        build_collaboration_graph(graph, collaborator, depth - 1, visited)
+"""
+
+
 def top_influential(graph: Graph, n: int) -> list:
     """Print the top n most influential artists."""
     vertices = graph.get_vertices()
@@ -210,14 +249,14 @@ def top_degree(graph: Graph, n: int) -> list:
 
 
 def analyse_graph(graph: Graph, depth: int) -> None:
-    """foo"""
+    """Prints the graph analysis (top influence and degree) to the console."""
     inf = top_influential(graph, depth)
     deg = top_degree(graph, depth)
     print("Top Influential Artists:")
     for artist in inf:
         print(artist)
 
-    print("Most Connected Artists:")
+    print("\n Most Connected Artists:")
     for artist in deg:
         print(artist)
 
@@ -265,13 +304,22 @@ def display_graph(graph: Graph) -> None:
     webbrowser.open_new_tab('graph.html')
 
 
-MAIN_GRAPH = Graph()
-PROMPT_ARTIST = input("What artist would you like to analyse? ")
-PROMPT_DEPTH = int(input("How many graph levels do you want? "
-                         "2 or 3 recommended. "
-                         "The more levels, the longer it takes. "))
-print("Please wait.......")
+if __name__ == '__main__':
+    MAIN_GRAPH = Graph()
+    PROMPT_ARTIST = input("What artist would you like to analyse? ")
+    PROMPT_DEPTH = int(input("How many graph levels do you want? "
+                             "2 or 3 recommended. "
+                             "The more levels, the longer it takes. "))
+    print("Please wait.......")
 
-build_collaboration_graph(MAIN_GRAPH, PROMPT_ARTIST, PROMPT_DEPTH)
-display_graph(MAIN_GRAPH)
-analyse_graph(MAIN_GRAPH, 15)
+    build_collaboration_graph(MAIN_GRAPH, PROMPT_ARTIST, PROMPT_DEPTH)
+    display_graph(MAIN_GRAPH)
+    analyse_graph(MAIN_GRAPH, 15)
+
+    import python_ta
+
+    python_ta.check_all(config={
+        'extra-imports': ["spotipy", "webbrowser", "math", "pyvis.network", "spotipy.oauth2"],
+        'allowed-io': ["analyse_graph"],
+        'max-line-length': 100
+    })
